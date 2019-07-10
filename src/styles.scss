@@ -1,1 +1,180 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent: mat-palette($mat-pink, A200, A100, A400);
+$candy-app-theme: mat-light-theme($candy-app-primary, $candy-app-accent);
+
+.lightTheme {
+  @include angular-material-theme($candy-app-theme);
+}
+
+$dark-accent: mat-palette($mat-amber, A200, A100, A400);
+$dark-warn: mat-palette($mat-deep-orange);
+$dark-theme: mat-dark-theme($candy-app-primary, $dark-accent, $dark-warn);
+
+.darkTheme {
+  @include angular-material-theme($dark-theme);
+}
+
+@font-face {
+  font-family: 'pixel';
+  src: url('assets/font/ARCADECLASSIC.TTF')  format('truetype')
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: pixel, sans-serif;
+}
+
+body {
+
+  &.lightTheme {
+    background-color: #fafafa;
+  }
+
+  &.darkTheme {
+    background-color: #303030;
+  }
+
+  span.spacer {
+    flex: 1 1 auto;
+  }
+
+  .container {
+    width: 720px;
+    margin: 0 auto;
+  }
+
+  .loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 60px;
+    width: 160px;
+    margin: 0;
+    transform: translate(-50%, -50%);
+
+    .circles {
+      position: absolute;
+      left: -5px;
+      top: 0;
+      height: 60px;
+      width: 180px;
+      animation: animcircles 0.5s infinite linear;
+
+      span {
+        position: absolute;
+        top: 25px;
+        height: 12px;
+        width: 12px;
+        border-radius: 12px;
+        background-color: #FFB9AF;
+
+        &.one {
+          right: 80px
+        }
+
+        &.two {
+          right: 40px
+        }
+
+        &.three {
+          right: 0;
+        }
+      }
+    }
+
+    .pacman {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 60px;
+      width: 60px;
+
+      .eye {
+        position: absolute;
+        top: 10px;
+        left: 30px;
+        height: 7px;
+        width: 7px;
+        border-radius: 7px;
+        background-color: #1C163A
+      }
+
+      span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 60px;
+        width: 60px;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          height: 30px;
+          width: 60px;
+          background-color: #FFFB16
+        }
+      }
+
+      .top {
+        animation: animtop 0.5s infinite;
+
+        &::before {
+          top: 0;
+          border-radius: 60px 60px 0 0;
+        }
+      }
+
+      .bottom {
+        animation: animbottom 0.5s infinite;
+
+        &::before {
+          bottom: 0;
+          border-radius: 0 0 60px 60px;
+        }
+      }
+
+      .left {
+
+        &::before {
+          bottom: 0;
+          height: 60px;
+          width: 30px;
+          border-radius: 60px 0 0 60px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes animcircles {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(-40px, 0px);
+  }
+}
+
+@keyframes animtop {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-45deg);
+  }
+}
+
+@keyframes animbottom {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(45deg);
+  }
+}

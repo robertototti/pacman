@@ -1,0 +1,93 @@
+:host {
+  display: block;
+
+  mat-card {
+    margin-top: 10px;
+
+    :host-context(.darkTheme) mat-card {
+      background: black;
+    }
+
+    mat-card-content {
+      position: relative;
+
+      .gameOver {
+        animation: eye 500ms ease-in-out infinite;
+        position: absolute;
+        top: 190px;
+        left: 130px;
+        z-index: 10;
+      }
+
+      .win {
+        animation: eye 500ms ease-in-out infinite;
+        position: absolute;
+        top: 190px;
+        left: 172px;
+        z-index: 10;
+      }
+
+      .start {
+        animation: eye 500ms ease-in-out infinite;
+        position: absolute;
+        top: 232px;
+        left: 65px;
+        z-index: 10;
+      }
+
+      .row {
+        display: flex;
+
+        .col {
+
+          &:nth-of-type(1) {
+            min-width: 410px;
+          }
+
+          &:nth-of-type(2) {
+            width: 100%;
+          }
+        }
+      }
+
+      #map1 {
+        display: block;
+      }
+
+      #food, #pacman, #map2, #blinky, #pinky, #inky, #clyde {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      #map2 {
+        z-index: 1;
+      }
+
+      #food {
+        z-index: 2;
+      }
+
+      #pacman {
+        z-index: 3;
+      }
+
+      #blinky, #pinky, #inky, #clyde {
+        z-index: 4;
+      }
+    }
+
+    mat-card-actions {
+      display: flex;
+    }
+  }
+}
+
+@keyframes eye {
+  90% {
+    color: yellow;
+  }
+  95% {
+    color: white;
+  }
+}
