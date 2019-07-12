@@ -28,20 +28,33 @@ export class AppComponent implements OnInit {
   pinky: Ghost;
   inky: Ghost;
   clyde: Ghost;
+
   food: number = 0;
 
   record: object[] = [];
+
+  beginning: HTMLAudioElement;
+  chomp: HTMLAudioElement;
+  death: HTMLAudioElement;
+
+  volume: boolean;
 
   constructor(private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
+    const volume = JSON.parse(localStorage.getItem('volume'));
+    if (typeof volume === 'boolean') {
+      this.volume = volume;
+    }
+
     this.changeTheme(localStorage.getItem('theme'));
     this.getRecord();
+    this.audioInit();
 
     this.gameArea = new GameArea(this.diameter, this.col, this.row);
     this.gameArea.init();
-    this.gameArea.fps = 48;
+    this.gameArea.fps = 70;
     this.gameArea.ready = true;
 
     this.pacman = new Pacman(this.diameter, this.col, this.row);
@@ -80,6 +93,9 @@ export class AppComponent implements OnInit {
         this.gameArea.grid = this.pacman.grid;
         this.gameArea.foodDraw();
         this.score += 10;
+        if (this.volume) {
+          this.chomp.play();
+        }
         ++this.food;
 
         if (this.food === 244) {
@@ -92,7 +108,7 @@ export class AppComponent implements OnInit {
           this.pacman.resetFood();
           this.gameArea.grid = this.pacman.grid;
           this.gameArea.foodDraw();
-          this.gameArea.fps += 24;
+          this.gameArea.fps += 20;
         }
       }
 
@@ -106,6 +122,9 @@ export class AppComponent implements OnInit {
     this.areUpdSub.unsubscribe();
     this.gameArea.startGame = false;
     this.pacman.healthPoints.pop();
+    if (this.volume) {
+      this.death.play();
+    }
     if (this.pacman.healthPoints.length) {
       this.ghostInit();
       this.pacman.init();
@@ -139,7 +158,7 @@ export class AppComponent implements OnInit {
       this.ghostInit();
       this.pacman.healthPoints = ['lifepoint', 'lifepoint', 'lifepoint'];
       this.pacman.init();
-      this.gameArea.fps = 48;
+      this.gameArea.fps = 70;
       this.gameArea.level = 1;
       this.pacman.resetFood();
       this.gameArea.grid = this.pacman.grid;
@@ -159,10 +178,23 @@ export class AppComponent implements OnInit {
   keyEvent(event: KeyboardEvent): void {
     if (!this.gameArea.startGame && event.code === 'Enter' && this.gameArea.ready) {
       this.gameArea.startGame = true;
-      this.gameAreaUpdate();
-      this.pinky.start();
-      this.inky.start();
-      this.clyde.start();
+
+      if (this.volume) {
+        this.beginning.play();
+
+        setTimeout(() => {
+          this.gameAreaUpdate();
+          this.pinky.start();
+          this.inky.start();
+          this.clyde.start();
+        }, 4300);
+
+      } else {
+        this.gameAreaUpdate();
+        this.pinky.start();
+        this.inky.start();
+        this.clyde.start();
+      }
 
     } else if (this.gameArea.startGame) {
       if (event.code.includes('KeyW')) {
@@ -200,5 +232,42 @@ export class AppComponent implements OnInit {
     if (record) {
       this.record = record;
     }
+  }
+
+  audioInit() {
+    this.beginning = document.createElement('AUDIO') as HTMLAudioElement;
+    if (this.beginning.canPlayType('audio/mpeg')) {
+      this.beginning.setAttribute('src', 'assets/audio/beginning.mp3');
+    } else {
+      this.beginning.setAttribute('src', 'assets/audio/beginning.mp3.ogg');
+    }
+    this.beginning.setAttribute('controls', 'controls');
+    this.beginning.style.display = 'none';
+    document.body.appendChild(this.beginning);
+
+    this.chomp = document.createElement('AUDIO') as HTMLAudioElement;
+    if (this.chomp.canPlayType('audio/mpeg')) {
+      this.chomp.setAttribute('src', 'assets/audio/chomp.mp3');
+    } else {
+      this.chomp.setAttribute('src', 'assets/audio/chomp.ogg');
+    }
+    this.chomp.setAttribute('controls', 'controls');
+    this.chomp.style.display = 'none';
+    document.body.appendChild(this.chomp);
+
+    this.death = document.createElement('AUDIO') as HTMLAudioElement;
+    if (this.death.canPlayType('audio/mpeg')) {
+      this.death.setAttribute('src', 'assets/audio/death.mp3');
+    } else {
+      this.death.setAttribute('src', 'assets/audio/death.ogg');
+    }
+    this.death.setAttribute('controls', 'controls');
+    this.death.style.display = 'none';
+    document.body.appendChild(this.death);
+  }
+
+  volumeChange(): void {
+    this.volume = !this.volume;
+    localStorage.setItem('volume', JSON.stringify(this.volume));
   }
 }
