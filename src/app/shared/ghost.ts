@@ -1,10 +1,13 @@
 import {Hero} from "./hero";
+import {grid} from "./grid";
 
 export class Ghost extends Hero {
 
   cordPacman: object;
 
   ready: boolean;
+
+  private time: number;
 
   constructor(private name: string,
               protected diameter: number,
@@ -14,6 +17,9 @@ export class Ghost extends Hero {
   }
 
   init(): void {
+    clearTimeout(this.time);
+    this.grid = grid;
+    this.ready = false;
     this.__direction = 'left';
     const canvas = document.getElementById(this.name) as HTMLCanvasElement;
     canvas.width = this.diameter * this.col;
@@ -42,7 +48,7 @@ export class Ghost extends Hero {
 
   start(): void {
     if (this.name === 'pinky') {
-      setTimeout(() => {
+      this.time = setTimeout(() => {
         this.clear();
         this.x = 196;
         this.y = 160;
@@ -50,7 +56,7 @@ export class Ghost extends Hero {
       }, 1000 * 5);
 
     } else if (this.name === 'inky') {
-      setTimeout(() => {
+      this.time = setTimeout(() => {
         this.clear();
         this.x = 196;
         this.y = 160;
@@ -58,7 +64,7 @@ export class Ghost extends Hero {
       }, 1000 * 10);
 
     } else if (this.name === 'clyde') {
-      setTimeout(() => {
+      this.time = setTimeout(() => {
         this.clear();
         this.x = 196;
         this.y = 160;

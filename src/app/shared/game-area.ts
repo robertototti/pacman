@@ -6,11 +6,14 @@ export class GameArea {
   grid: Array<string[]>;
 
   startGame: boolean;
+  ready: boolean;
+
+  level: number = 1;
+  fps: number;
 
   constructor(private diameter: number,
               private col: number,
-              private row: number,
-              private fps: number) {
+              private row: number) {
   }
 
   init(): void {

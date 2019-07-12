@@ -14,6 +14,8 @@ export class Pacman extends Hero {
 
   private waitDirection: string;
 
+  healthPoints: string[] = ['lifepoint', 'lifepoint', 'lifepoint'];
+
   constructor(protected diameter: number,
               protected col: number,
               protected row: number) {
@@ -21,17 +23,31 @@ export class Pacman extends Hero {
   }
 
   init(): void {
-    this.grid = grid;
     this.__direction = 'right';
     const canvas = document.getElementById('pacman') as HTMLCanvasElement;
     canvas.width = this.diameter * this.col;
     canvas.height = this.diameter * this.row;
     this.ctx = canvas.getContext('2d');
 
+    this.headDirectionChange();
+    this.healthPointsDraw();
+
     this.x = 195;
     this.y = 329;
-
     this.drawPacman();
+  }
+
+  resetFood(): void {
+    this.grid = grid.map(el => Object.assign([], el));
+  }
+
+  private healthPointsDraw(): void {
+    this.x = -25;
+    this.y = 450;
+    for (let i = 1; i < this.healthPoints.length; i++) {
+      this.x += 35;
+      this.drawPacman();
+    }
   }
 
   update(): void {
@@ -54,11 +70,13 @@ export class Pacman extends Hero {
       }
 
       this.eat(this.canGo(this.waitDirection, true));
+      this.pacmanHeadAnimation();
       this.drawPacman();
 
     } else if (this.canGo(this.__direction)) {
       this.move();
       this.eat(this.canGo(this.__direction, true));
+      this.pacmanHeadAnimation();
       this.drawPacman();
     }
   }
@@ -86,6 +104,20 @@ export class Pacman extends Hero {
   private drawPacman(): void {
     this.clear();
 
+    this.ctx.beginPath();
+    this.ctx.arc(this.x, this.y, this.diameter / 2 + 2, this.startAngle * Math.PI, this.endAngle * Math.PI);
+
+    this.ctx.lineTo(this.x, this.y);
+    this.ctx.closePath();
+
+    this.ctx.strokeStyle = '#000';
+    this.ctx.stroke();
+
+    this.ctx.fillStyle = "#FF0";
+    this.ctx.fill();
+  }
+
+  private pacmanHeadAnimation(): void {
     if (this.openHead) {
       this.startAngle -= 0.05;
       this.endAngle += 0.05;
@@ -106,18 +138,6 @@ export class Pacman extends Hero {
         this.incline = 6;
       }
     }
-
-    this.ctx.beginPath();
-    this.ctx.arc(this.x, this.y, this.diameter / 2 + 2, this.startAngle * Math.PI, this.endAngle * Math.PI);
-
-    this.ctx.lineTo(this.x, this.y);
-    this.ctx.closePath();
-
-    this.ctx.strokeStyle = '#000';
-    this.ctx.stroke();
-
-    this.ctx.fillStyle = "#FF0";
-    this.ctx.fill();
   }
 
   private headDirectionChange(): void {

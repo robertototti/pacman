@@ -2,7 +2,6 @@
   display: block;
 
   mat-card {
-    margin-top: 10px;
 
     :host-context(.darkTheme) mat-card {
       background: black;
@@ -10,29 +9,20 @@
 
     mat-card-content {
       position: relative;
+      margin-bottom: 0;
 
-      .gameOver {
-        animation: eye 500ms ease-in-out infinite;
-        position: absolute;
-        top: 190px;
-        left: 130px;
-        z-index: 10;
-      }
-
-      .win {
-        animation: eye 500ms ease-in-out infinite;
-        position: absolute;
-        top: 190px;
-        left: 172px;
-        z-index: 10;
+      .record {
+        height: 145px;
+        overflow: hidden;
       }
 
       .start {
         animation: eye 500ms ease-in-out infinite;
         position: absolute;
-        top: 232px;
-        left: 65px;
+        top: 230px;
+        left: 122px;
         z-index: 10;
+        text-align: center;
       }
 
       .row {
@@ -89,5 +79,16 @@
   }
   95% {
     color: white;
+  }
+}
+
+:host-context(.darkTheme) {
+  @keyframes eye {
+    90% {
+      color: yellow;
+    }
+    95% {
+      color: black;
+    }
   }
 }

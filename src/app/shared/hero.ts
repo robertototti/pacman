@@ -1,5 +1,3 @@
-import {grid} from "./grid";
-
 export class Hero {
 
   x: number;
@@ -9,7 +7,7 @@ export class Hero {
 
   protected __direction: string;
 
-  grid: Array<string[]> = grid;
+  grid: Array<string[]>;
 
   constructor(protected diameter: number) {
   }
@@ -48,7 +46,6 @@ export class Hero {
         }
 
       } else {
-        // debugger;
         row = Math.floor((this.y - i) / this.diameter);
         if (this.grid[row][col - 1] && this.grid[row][col - 1].includes('wall')) {
           return false;
