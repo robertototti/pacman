@@ -46,6 +46,9 @@ export class AppComponent implements OnInit {
     const volume = JSON.parse(localStorage.getItem('volume'));
     if (typeof volume === 'boolean') {
       this.volume = volume;
+
+    } else {
+      this.volume = true;
     }
 
     this.changeTheme(localStorage.getItem('theme'));
@@ -150,7 +153,7 @@ export class AppComponent implements OnInit {
           });
 
           localStorage.setItem('record', JSON.stringify(this.record));
-          this.record.length = 3;
+          this.record = this.record.slice(0, 3);
           this.gameArea.ready = true;
         }
       });
