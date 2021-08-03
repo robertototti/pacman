@@ -1,8 +1,8 @@
 # Pacman
 
-[Play](https://robertototti.github.io/pacman/)
-
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
+
+[Play](https://robertototti.github.io/pacman/) 😋
 
 ## Development server
 
